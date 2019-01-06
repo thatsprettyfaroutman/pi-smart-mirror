@@ -1,4 +1,4 @@
-# PI SMART mirror
+# PI SMART MIRROR
 
 
 React display for raspberry pi powered smart mirror
