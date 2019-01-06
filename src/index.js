@@ -1,12 +1,35 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import App from 'components/App'
+import { Top, Middle, Bottom } from 'components/Section'
+import Row from 'components/Row'
+import Time from 'components/Time'
+import Weather from 'components/Weather'
+import Today from 'components/Today'
+import Message from 'components/Message'
+import Trams from 'components/Trams'
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+
+ReactDOM.render((
+  <App>
+    <Top>
+      {/* <Row>Steps go here</Row> */}
+    </Top>
+    <Middle>
+      <Row>
+        <Message />
+      </Row>
+    </Middle>
+    <Bottom>
+      <Row>
+        <Time />
+        <Weather />
+      </Row>
+      <Row>
+        <Today />
+        <Trams />
+      </Row>
+    </Bottom>
+  </App>
+), document.getElementById('root'))
