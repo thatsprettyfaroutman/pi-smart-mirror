@@ -42,9 +42,7 @@ export function getLocation() {
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
         resolve(sanitizeLocation(coords))
-        alert(coords.latitude + ' : ' + coords.longitude)
       }, () => {
-        alert('no location')
         resolve(sanitizeLocation({
           // latitude: 60.170852800000006,
           // longitude: 24.945129599999998,
