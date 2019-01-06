@@ -37,7 +37,7 @@ class TramsComponent extends Component {
 
   componentDidMount() {
     this.mounted = true
-    this.getPlans()
+    this.fetchPlans()
   }
 
   componentWillUnmount() {
@@ -47,11 +47,24 @@ class TramsComponent extends Component {
   }
 
 
-  getPlans = async () => {
+  fetchPlans = async () => {
     const location = await getLocation()
-    let plans = await getPlans( location, WORK_LOCATION, WALK_TIME )
+    let plans
+
+    try {
+      plans = await getPlans( location, WORK_LOCATION, WALK_TIME )
+    } catch(err) {
+      console.log(err)
+      return this.setState({ plan: '' })
+    }
 
     plans = plans.filter(([_, x]) => x > REMOVE_LIMIT)
+
+    if ( !plans.length ) {
+      return this.setState({ plan: '' })
+    }
+
+
     const [ line, secondsToArrival ] = plans[0]
 
     let message = `in ${ Math.floor(secondsToArrival / 60) }`
@@ -64,7 +77,7 @@ class TramsComponent extends Component {
       plan: `${line} ${message}`
     })
 
-    this.timeout = setTimeout(this.getPlans, 10000)
+    this.timeout = setTimeout(this.fetchPlans, 10000)
   }
 
   render() {

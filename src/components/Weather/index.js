@@ -86,7 +86,6 @@ export default class extends Component {
 
   render() {
     const { temp, rain } = this.state
-    console.log(temp)
     return (
       <Weather>
         { rain && '🌧' } { isNaN(temp) ? '◇' : temp }°

@@ -38,10 +38,21 @@ export async function getHslData(query) {
 
 
 export function getLocation() {
-  return new Promise( resolve => {
-    navigator.geolocation.getCurrentPosition(({ coords }) => {
-      resolve(sanitizeLocation(coords))
-    })
+  return new Promise( resolve=> {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        resolve(sanitizeLocation(coords))
+        alert(coords.latitude + ' : ' + coords.longitude)
+      }, () => {
+        alert('no location')
+        resolve(sanitizeLocation({
+          // latitude: 60.170852800000006,
+          // longitude: 24.945129599999998,
+          latitude: 60.159158000000005,
+          longitude: 24.919978,
+        }))
+      }
+    )
   })
 }
 
@@ -62,10 +73,7 @@ export function sanitizeLocation( location ) {
 
 
 export async function solveNearestStop() {
-  const location = await getLocation() || {
-    latitude: 60.170852800000006,
-    longitude: 24.945129599999998,
-  }
+  let location = await getLocation()
 
   const nearest = await getHslData(`{
     nearest(lat: ${ location.latitude }, lon: ${ location.longitude }) {
@@ -215,5 +223,8 @@ export async function getPlans(fromLocation, toLocation, walkTime = 0) {
     )
     .sort((a, b) => Number(a[0]) - Number(b[0]))
     .map(plan => [plan[1], Number(plan[0])])
+    .filter( x => Boolean(x[0]))
+
+  console.log(stepStrings)
   return stepStrings
 }
