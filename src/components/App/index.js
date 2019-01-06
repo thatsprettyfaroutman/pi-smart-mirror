@@ -7,7 +7,7 @@ const App = styled.div`
   box-sizing: border-box;
   height: 100vh;
   margin: 0;
-  padding: 120px;
+  padding: 60px;
   background-color: #000;
   color: #fff;
   font-family: Poppins, sans-serif;
