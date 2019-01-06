@@ -223,6 +223,5 @@ export async function getPlans(fromLocation, toLocation, walkTime = 0) {
     .map(plan => [plan[1], Number(plan[0])])
     .filter( x => Boolean(x[0]))
 
-  console.log(stepStrings)
   return stepStrings
 }
