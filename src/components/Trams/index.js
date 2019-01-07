@@ -20,7 +20,7 @@ const WORK_LOCATION = {
 }
 
 const WALK_TIME = 3 * 60
-const NOW_LIMIT = 0
+const NOW_LIMIT = 60
 const HURRY_LIMIT = -1 * 60
 const REMOVE_LIMIT = -2 * 60
 
