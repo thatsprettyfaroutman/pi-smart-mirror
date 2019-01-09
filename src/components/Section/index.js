@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 
 export const Top = styled.section`
-
+  min-height: 200px;
 `
 
 
@@ -12,7 +12,7 @@ export const Middle = styled.section`
 
 
 export const Bottom = styled.section`
-
+  min-height: 200px;
 `
 
 
