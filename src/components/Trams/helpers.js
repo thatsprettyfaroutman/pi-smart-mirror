@@ -2,8 +2,7 @@ import {
   differenceInMinutes,
   startOfToday,
   differenceInSeconds,
-  addSeconds,
- } from 'date-fns'
+} from 'date-fns'
 import {
   last,
   path,
@@ -40,8 +39,8 @@ export async function getHslData(query) {
 export function getLocation() {
   return new Promise( resolve=> {
     navigator.geolocation.getCurrentPosition(
-      ({ coords }) => {
-        resolve(sanitizeLocation(coords))
+      pos => {
+        resolve(sanitizeLocation(pos.coords))
       }, () => {
         resolve(sanitizeLocation({
           // latitude: 60.170852800000006,
@@ -148,20 +147,15 @@ export async function getTrams( stopId, startTime = getNowInSeconds() ) {
 
 
 
-export async function getPlans(fromLocation, toLocation, walkTime = 0) {
+export async function getPlans(fromLocation, toLocation, when = new Date()) {
   const a = sanitizeLocation(fromLocation)
   const b = sanitizeLocation(toLocation)
 
-  let now = new Date()
-
-  // now with walktime
-  now = addSeconds(now, walkTime)
-
-  const today = startOfToday(now)
-  const todayTime = differenceInSeconds(now, today)
-  const year = now.getFullYear()
-  const month = `0${now.getMonth() + 1}`.slice(-2)
-  const day = `0${now.getDate()}`.slice(-2)
+  const today = startOfToday(when)
+  const todayTime = differenceInSeconds(when, today)
+  const year = when.getFullYear()
+  const month = `0${when.getMonth() + 1}`.slice(-2)
+  const day = `0${when.getDate()}`.slice(-2)
 
   const res = await getHslData(`{
     plan(
@@ -200,28 +194,25 @@ export async function getPlans(fromLocation, toLocation, walkTime = 0) {
     }
   }`)
 
-  now = new Date()
+  const now = new Date()
 
   const steps = path(['data', 'plan', 'itineraries'], res) || []
   const stepStrings = steps
     .map(step => step.legs
       .map((leg, i) => {
         let seconds = differenceInSeconds(new Date(leg.startTime), now)
-        seconds -= walkTime
-        const stepItems = [
-          // leg.mode !== 'WALK' ? leg.mode : null,
-          leg.trip ? leg.trip.route.shortName : null,
-          i === 0 ? `${seconds}` : null,
+        return [
+          leg.trip ? leg.trip.route.shortName : undefined,
+          i === 0 ? Number(seconds) : undefined,
         ]
-        return stepItems
-          .filter(Boolean)
+          .filter(x => x !== undefined)
           .join(' ')
       })
       .filter(Boolean)
     )
     .sort((a, b) => Number(a[0]) - Number(b[0]))
+    .filter(x => Boolean(x[1]))
     .map(plan => [plan[1], Number(plan[0])])
-    .filter( x => Boolean(x[0]))
 
   return stepStrings
 }

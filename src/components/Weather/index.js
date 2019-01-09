@@ -1,12 +1,25 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { last } from 'ramda'
+import rainIcon from './raindrop.svg'
+import snowIcon from './snowflake.svg'
 
 
 
 
 const Weather = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   font-size: 60px;
+
+  > img {
+    display: block;
+    margin: 0;
+    margin-right: 20px;
+    height: 30px;
+    width: auto;
+  }
 `
 
 
@@ -85,10 +98,11 @@ export default class extends Component {
   }
 
   render() {
-    const { temp, rain } = this.state
+    let { temp, rain } = this.state
     return (
       <Weather>
-        { rain && '🌧' } { isNaN(temp) ? '◇' : temp }°
+        { rain && <img src={ temp < 1 ? snowIcon : rainIcon }  alt="rain"/> }
+        { isNaN(temp) ? '◇' : temp }°
       </Weather>
     )
   }

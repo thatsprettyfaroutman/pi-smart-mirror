@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { addSeconds } from 'date-fns'
+import { timeout } from 'utils'
 import {
   getLocation,
   getPlans,
@@ -27,12 +29,17 @@ const REMOVE_LIMIT = -2 * 60
 
 
 class TramsComponent extends Component {
+
+
   state = {
-    plan: 'Loading trams'
+    loading: true,
+    plan: undefined,
   }
 
   mounted = false
   timeout = null
+
+
 
 
   componentDidMount() {
@@ -47,46 +54,53 @@ class TramsComponent extends Component {
   }
 
 
+
+
   fetchPlans = async () => {
-    const location = await getLocation()
-    let plans
+    let plans = []
 
     try {
-      plans = await getPlans( location, WORK_LOCATION, WALK_TIME )
-    } catch(err) {
-      console.log(err)
-      return this.setState({ plan: '' })
+      const location = await getLocation()
+      plans = await getPlans( location, WORK_LOCATION, addSeconds(new Date(), WALK_TIME) )
+    } catch ( error ) {
+      console.log(error)
     }
 
-    plans = plans.filter(([_, x]) => x > REMOVE_LIMIT)
-
-    if ( !plans.length ) {
-      return this.setState({ plan: '' })
-    }
-
-
-    const [ line, secondsToArrival ] = plans[0]
-
-    let message = `in ${ Math.floor(secondsToArrival / 60) }`
-    if (secondsToArrival <= NOW_LIMIT) message = 'now'
-    if (secondsToArrival <= HURRY_LIMIT) message = 'hurry'
-
-    if ( !this.mounted ) return
+    plans =
+      plans.map(([line, seconds]) => [line, seconds - WALK_TIME])
+      plans.filter(([_, seconds]) => seconds > REMOVE_LIMIT)
 
     this.setState({
-      plan: `${line} ${message}`
+      loading: false,
+      plan: plans[0],
     })
 
-    this.timeout = setTimeout(this.fetchPlans, 10000)
+    await timeout(10000)
+    this.fetchPlans()
   }
 
+
+
+
   render() {
-    const { plan } = this.state
-    if ( !plan ) return null
+    const { loading, plan } = this.state
+
+    if ( loading ) return (
+      <Trams>Loading</Trams>
+    )
+
+    if ( !plan ) return (
+      <Trams>No routes</Trams>
+    )
+
+    const [ line, seconds ] = plan
+    let message = `in ${ Math.floor(seconds / 60) }`
+    if ( seconds <= NOW_LIMIT ) message = 'now'
+    if ( seconds <= HURRY_LIMIT ) message = 'hurry'
 
     return (
       <Trams>
-        { plan }
+        { line } { message }
       </Trams>
     )
   }
