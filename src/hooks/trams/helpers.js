@@ -16,7 +16,7 @@ export const HSL_URL = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/
 
 
 export function getNowInSeconds() {
-  return  Math.round(Date.now() / 1000)
+  return Math.round(Date.now() / 1000)
 }
 
 
@@ -147,9 +147,13 @@ export async function getTrams( stopId, startTime = getNowInSeconds() ) {
 
 
 
-export async function getPlans(fromLocation, toLocation, when = new Date()) {
-  const a = sanitizeLocation(fromLocation)
-  const b = sanitizeLocation(toLocation)
+export async function getPlans(from, to, when = new Date()) {
+  if ( !from || !to ) {
+    throw new Error('`from` or `to` is missing')
+  }
+
+  const a = sanitizeLocation(from)
+  const b = sanitizeLocation(to)
 
   const today = startOfToday(when)
   const todayTime = differenceInSeconds(when, today)
