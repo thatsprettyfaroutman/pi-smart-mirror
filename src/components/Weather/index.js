@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import useSettings from 'hooks/settings'
 import useWeather from 'hooks/weather'
 import useTick from 'hooks/tick'
+import Loading from 'components/Loading'
 import rainIcon from './raindrop.svg'
 import snowIcon from './snowflake.svg'
 
@@ -12,6 +13,7 @@ import snowIcon from './snowflake.svg'
 const Weather = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: flex-end;
   align-items: center;
   font-size: 60px;
 
@@ -35,7 +37,9 @@ const WeatherComponent = () => {
 
 
   if ( loading ) return (
-    <Weather>Loading</Weather>
+    <Weather>
+      <Loading />
+    </Weather>
   )
 
   return (

@@ -7,6 +7,7 @@ import {
 } from 'utils'
 import useEpics from 'hooks/epics'
 import useTick from 'hooks/tick'
+import Loading from 'components/Loading'
 
 
 
@@ -42,10 +43,12 @@ const MessageComponent = () => {
 
   // Updates component every UPDATE_TIME
   useTick(UPDATE_TIME)
+  const { epics, loading } = useEpics()
+
 
   const messages = [
     getPaydayMessage(),
-    ...epicsToMessages(useEpics())
+    ...epicsToMessages(epics)
   ]
 
   const messageIndex = getModulusForCurrentTime(UPDATE_TIME, messages.length)
@@ -54,8 +57,9 @@ const MessageComponent = () => {
   return (
     <Message>
       { message.map((part, i) => (
-        <div key={ i }>{ part }</div>
+        <div key={ i }>{ part } { i === 0 && loading ? <Loading /> : null }</div>
       )) }
+
     </Message>
   )
 }
