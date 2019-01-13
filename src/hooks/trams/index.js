@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { addSeconds } from 'date-fns'
 import { getPlans } from './helpers'
+import useLoaderCount from 'hooks/loaderCount'
 
 
 
@@ -21,22 +22,22 @@ export default ( props = {} ) => {
   const [ plan, setPlan ] = useState(null)
   const [ loading, setLoading ] = useState(true)
   const [ fetching, setFetching ] = useState(false)
+  const [ addLoader, removeLoader ] = useLoaderCount().slice(1)
 
   const updateState = async () => {
     if ( fetching ) return
     if ( !plan ) setLoading(true)
     setFetching(true)
+    addLoader()
     try {
       const when = addSeconds(new Date(), offsetSeconds)
       const plans = await getPlans(from, to, when)
       const sanitizedPlans = sanitizeResponse(offsetSeconds, plans)
       setPlan(sanitizedPlans[0] || null)
       setLoading(false)
-      setFetching(false)
-    } catch (error) {
-      setFetching(false)
-      // console.log(error)
-    }
+    } catch (error) {}
+    setFetching(false)
+    removeLoader()
   }
 
   useEffect(() => {

@@ -10,6 +10,7 @@ const Time = styled.div`
 
 const TimeComponent = () => {
   useTick(1000)
+
   const now = new Date()
   const hours = `0${now.getHours()}`.slice(-2)
   const minutes = `0${now.getMinutes()}`.slice(-2)

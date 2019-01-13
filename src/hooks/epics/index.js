@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { isFuture } from 'date-fns'
 import { timeout } from 'utils'
+import useLoaderCount from 'hooks/loaderCount'
 
 
 
@@ -38,21 +39,21 @@ export default () => {
   const [ epics, setEpics ] = useState(undefined)
   const [ loading, setLoading ] = useState(true)
   const [ fetching, setFetching ] = useState(false)
+  const [ addLoader, removeLoader ] = useLoaderCount().slice(1)
 
   const updateState = async () => {
     if ( fetching ) return
     if ( !epics ) setLoading(true)
     setFetching(true)
+    addLoader()
     try {
       const epics = await getEpics()
       const sanitizedEpics = sanitizeResponse(epics)
       setEpics(sanitizedEpics)
       setLoading(false)
-      setFetching(false)
-    } catch (error) {
-      setFetching(false)
-      console.log(error)
-    }
+    } catch (error) {}
+    setFetching(false)
+    removeLoader()
   }
 
   useEffect(() => {
