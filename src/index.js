@@ -1,9 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import App from 'components/App'
-import { Top, Middle, Bottom } from 'components/Section'
-import Row from 'components/Row'
+import { Main, Top, Middle, Bottom } from 'components/Layout'
 import Time from 'components/Time'
 import Weather from 'components/Weather'
 import Today from 'components/Today'
@@ -12,24 +10,18 @@ import Trams from 'components/Trams'
 
 
 ReactDOM.render((
-  <App>
+  <Main>
     <Top>
       {/* <Row>Steps go here</Row> */}
     </Top>
     <Middle>
-      <Row>
-        <Message />
-      </Row>
+      <Message />
     </Middle>
     <Bottom>
-      <Row>
-        <Time />
-        <Weather />
-      </Row>
-      <Row>
-        <Today />
-        <Trams />
-      </Row>
+      <Time />
+      <Weather />
+      <Today />
+      <Trams />
     </Bottom>
-  </App>
+  </Main>
 ), document.getElementById('root'))

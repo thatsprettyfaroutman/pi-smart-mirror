@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import useSettings from 'hooks/settings'
 import useTrams from 'hooks/trams'
 import useTick from 'hooks/tick'
+import Loading from 'components/Loading'
 
 
 
@@ -33,7 +34,9 @@ const TramsComponent = () => {
   const { loading, plan } = trams
 
   if ( loading ) return (
-    <Trams>Loading</Trams>
+    <Trams>
+      <Loading />
+    </Trams>
   )
 
   if ( !plan ) return (

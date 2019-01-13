@@ -35,18 +35,18 @@ const sanitizeResponse = res => res
 
 
 export default () => {
-  const [ state, setState ] = useState(undefined)
+  const [ epics, setEpics ] = useState(undefined)
   const [ loading, setLoading ] = useState(true)
   const [ fetching, setFetching ] = useState(false)
 
   const updateState = async () => {
     if ( fetching ) return
-    if ( !state ) setLoading(true)
+    if ( !epics ) setLoading(true)
     setFetching(true)
     try {
       const epics = await getEpics()
       const sanitizedEpics = sanitizeResponse(epics)
-      setState(sanitizedEpics)
+      setEpics(sanitizedEpics)
       setLoading(false)
       setFetching(false)
     } catch (error) {
@@ -61,5 +61,5 @@ export default () => {
     new Date().getHours() // Fetch new items only once per hour
   ])
 
-  return state
+  return { epics, loading }
 }
