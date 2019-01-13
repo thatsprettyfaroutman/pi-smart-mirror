@@ -4,8 +4,8 @@ import useSettings from 'hooks/settings'
 import useWeather from 'hooks/weather'
 import useTick from 'hooks/tick'
 import Loading from 'components/Loading'
-import rainIcon from './raindrop.svg'
-import snowIcon from './snowflake.svg'
+import RainDrop from './RainDrop'
+import SnowFlake from './SnowFlake'
 
 
 
@@ -17,7 +17,7 @@ const Weather = styled.div`
   align-items: center;
   font-size: 60px;
 
-  > img {
+  > svg {
     display: block;
     margin: 0;
     margin-right: 20px;
@@ -44,7 +44,7 @@ const WeatherComponent = () => {
 
   return (
     <Weather>
-      { rain && <img src={ temp < 1 ? snowIcon : rainIcon } alt="rain"/> }
+      { rain && temp < 1 ? <SnowFlake /> : <RainDrop /> }
       { isNaN(temp) ? '◇' : temp }°
     </Weather>
   )
