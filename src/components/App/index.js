@@ -13,7 +13,7 @@ const App = styled.div`
   font-family: Poppins, sans-serif;
   font-size: 40px;
   font-weight: 200;
-  line-height: 1;
+  line-height: 1.2;
 `
 
 
