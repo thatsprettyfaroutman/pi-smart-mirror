@@ -35,7 +35,6 @@ const WeatherComponent = () => {
 
   let { temp, rain, loading } = weather
 
-
   if ( loading ) return (
     <Weather>
       <Loading />
