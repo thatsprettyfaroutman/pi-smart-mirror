@@ -4,7 +4,7 @@ import {
 import useTick from 'hooks/tick'
 
 const CHARACTERS = '⌜⌝⌟⌞'.split('')
-const TICK = 100
+const TICK = 1000 / 15
 
 export default () => {
   useTick(TICK)

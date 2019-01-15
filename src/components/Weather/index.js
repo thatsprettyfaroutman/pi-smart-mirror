@@ -44,7 +44,7 @@ const WeatherComponent = () => {
 
   return (
     <Weather>
-      { rain && temp < 1 ? <SnowFlake /> : <RainDrop /> }
+      { rain ? temp < 1 ? <SnowFlake /> : <RainDrop /> : null}
       { isNaN(temp) ? '◇' : temp }°
     </Weather>
   )
