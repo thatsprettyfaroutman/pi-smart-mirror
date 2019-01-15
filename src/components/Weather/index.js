@@ -4,6 +4,7 @@ import useSettings from 'hooks/settings'
 import useWeather from 'hooks/weather'
 import useTick from 'hooks/tick'
 import Loading from 'components/Loading'
+
 import RainDrop from './RainDrop'
 import SnowFlake from './SnowFlake'
 
@@ -15,7 +16,7 @@ const Weather = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  font-size: 60px;
+  font-size: 40px;
 
   > svg {
     display: block;
@@ -33,7 +34,7 @@ const WeatherComponent = () => {
   const settings = useSettings()
   const weather = useWeather(settings && settings.weatherStation)
 
-  let { temp, rain, loading } = weather
+  const { temp, rain, loading } = weather
 
   if ( loading ) return (
     <Weather>
@@ -44,7 +45,14 @@ const WeatherComponent = () => {
   return (
     <Weather>
       { rain ? temp < 1 ? <SnowFlake /> : <RainDrop /> : null}
-      { isNaN(temp) ? '◇' : temp }°
+      {/* <LCDNumber
+        pixelSize={ 2 }
+        pixelGroup={ 2 }
+        pixelSpacing={ 4 }
+        letterSpacing={ 10 }
+      > */}
+        { isNaN(temp) ? '◇' : temp }°
+      {/* </LCDNumber> */}
     </Weather>
   )
 }

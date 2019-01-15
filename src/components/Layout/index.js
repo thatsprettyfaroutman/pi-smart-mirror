@@ -12,7 +12,6 @@ export const Main = styled.div`
   padding: 60px;
   background-color: #000;
   color: #fff;
-  font-family: Poppins, sans-serif;
   font-size: 40px;
   font-weight: 200;
   line-height: 1.2;
@@ -34,6 +33,7 @@ export const Bottom = styled.section`
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-rows: auto auto;
+  grid-row-gap: 40px;
   align-items: baseline;
   align-self: flex-end;
   min-height: 200px;
