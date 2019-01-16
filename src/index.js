@@ -13,7 +13,7 @@ import LoadingStatus from 'components/LoadingStatus'
 ReactDOM.render((
   <Main>
     <Top>
-      {/* <Row>Steps go here</Row> */}
+      {/* Steps go here */}
       <LoadingStatus />
     </Top>
     <Middle>
@@ -21,9 +21,9 @@ ReactDOM.render((
     </Middle>
     <Bottom>
       <Time />
-      <Weather />
-      <Today />
       <Trams />
+      <Today />
+      <Weather />
     </Bottom>
   </Main>
 ), document.getElementById('root'))

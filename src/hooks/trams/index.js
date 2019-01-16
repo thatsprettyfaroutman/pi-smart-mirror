@@ -8,7 +8,7 @@ import useLoaderCount from 'hooks/loaderCount'
 
 const sanitizeResponse = (offsetSeconds, plans) => plans
   .map(([line, seconds]) => [line, seconds - offsetSeconds])
-  .filter(([line, seconds]) => seconds > (offsetSeconds - 60) * -1)
+  .filter(([line, seconds]) => seconds > (offsetSeconds - 60) * -2)
 
 
 

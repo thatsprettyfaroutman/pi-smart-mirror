@@ -5,15 +5,14 @@ import {
 import useTick from 'hooks/tick'
 
 const CHARACTERS = '⌜⌝⌟⌞'.split('')
-const TICK = 1000 / 15
 
-export default ({ component }) => {
-  useTick(TICK)
-  const i = getModulusForCurrentTime(TICK, CHARACTERS.length)
+export default ({ wrapper, wrapperProps, tick = 1000 / 15 }) => {
+  useTick(tick)
+  const i = getModulusForCurrentTime(tick, CHARACTERS.length)
 
-  const Wrapper = component
+  const Wrapper = wrapper
   if ( Wrapper ) return (
-    <Wrapper>
+    <Wrapper { ...wrapperProps }>
       { CHARACTERS[i] }
     </Wrapper>
   )

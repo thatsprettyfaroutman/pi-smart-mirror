@@ -12,7 +12,7 @@ export const Main = styled.div`
   padding: 60px;
   background-color: #000;
   color: #fff;
-  font-size: 40px;
+  font-size: 30px;
   font-weight: 200;
   line-height: 1.2;
 `
@@ -34,9 +34,11 @@ export const Bottom = styled.section`
   grid-template-columns: 1fr auto;
   grid-template-rows: auto auto;
   grid-row-gap: 40px;
-  align-items: baseline;
-  align-self: flex-end;
   min-height: 200px;
+
+  & > * {
+    align-self: center;
+  }
 
   & > :nth-child(even) {
     text-align: right;

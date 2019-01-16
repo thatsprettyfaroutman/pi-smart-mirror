@@ -1,12 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import numbers from './numbers'
+import characters from './characters'
 
 const LCDNumber = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-end;
   padding-left: ${({ spacing }) => spacing }px;
   padding-top: ${({ spacing }) => spacing }px;
 
@@ -43,7 +40,7 @@ const LCDNumberComponent = ({
       spacing={ rest.pixelSpacing }
     >
       { text.split('').map( (character, i) => (
-        <LCDNumberSvg { ...rest } key={ i } value={ character } />
+        <LCDNumberSvg { ...rest } key={ i } value={ character.toLowerCase() } />
       ))}
     </LCDNumber>
   )
@@ -58,16 +55,16 @@ const LCDNumberSvg = ({
   const fullSize = pixelSpacing + pixelSize
   const clusterSize = fullSize * pixelGroup
 
-  const number = numbers[value]
-  if ( !number ) return null
+  const character = characters[value]
+  if ( !character ) return null
 
-  const rows = number.length
-  const columns = number[0].length
+  const rows = character.length
+  const columns = character[0].length
 
 
   return (
     <svg width={ columns * clusterSize} height={ rows * clusterSize }>
-      { number.map( (row, y) => row.map( (draw, x) => {
+      { character.map( (row, y) => row.map( (draw, x) => {
 
         // Never render these parts
         if ( !draw && x === 1 ) {

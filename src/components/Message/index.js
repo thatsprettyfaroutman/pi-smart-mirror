@@ -13,7 +13,7 @@ import Loading from 'components/Loading'
 
 
 const Message = styled.div`
-
+  font-size: 60px;
 `
 
 

@@ -4,6 +4,7 @@ import useSettings from 'hooks/settings'
 import useTrams from 'hooks/trams'
 import useTick from 'hooks/tick'
 import Loading from 'components/Loading'
+import LCDNumber from 'components/LCDNumber'
 
 
 
@@ -35,7 +36,16 @@ const TramsComponent = () => {
 
   if ( loading ) return (
     <Trams>
-      <Loading />
+      <Loading
+        // tick={ 1000 / 5}
+        // wrapper={ LCDNumber }
+        // wrapperProps={{
+        //   pixelSize: 1,
+        //   pixelGroup: 4,
+        //   pixelSpacing: 2,
+        //   letterSpacing: 12,
+        // }}
+      />
     </Trams>
   )
 
@@ -44,13 +54,19 @@ const TramsComponent = () => {
   )
 
   const [ line, seconds ] = plan
-  let message = `in ${ Math.floor(seconds / 60) }`
-  if ( seconds <= NOW_LIMIT ) message = 'now'
+  let message = `${ Math.floor(seconds / 60) }`
+  if ( seconds <= NOW_LIMIT ) message = 'go'
   if ( seconds <= HURRY_LIMIT ) message = 'hurry'
 
   return (
     <Trams>
-      { line } { message }
+      <LCDNumber
+        pixelSize={ 1 }
+        pixelGroup={ 4 }
+        pixelSpacing={ 2 }
+        letterSpacing={ 12 }
+        children={ `${line} > ${message}` }
+      />
     </Trams>
   )
 }

@@ -16,13 +16,12 @@ const Weather = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  font-size: 40px;
 
   > svg {
     display: block;
     margin: 0;
     margin-right: 20px;
-    height: 30px;
+    height: 20px;
     width: auto;
   }
 `
@@ -45,14 +44,7 @@ const WeatherComponent = () => {
   return (
     <Weather>
       { rain ? temp < 1 ? <SnowFlake /> : <RainDrop /> : null}
-      {/* <LCDNumber
-        pixelSize={ 2 }
-        pixelGroup={ 2 }
-        pixelSpacing={ 4 }
-        letterSpacing={ 10 }
-      > */}
-        { isNaN(temp) ? '◇' : temp }°
-      {/* </LCDNumber> */}
+      { isNaN(temp) ? '◇' : temp }°
     </Weather>
   )
 }
