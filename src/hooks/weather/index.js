@@ -33,7 +33,8 @@ export default weatherStation => {
   useEffect(() => {
     updateState()
   }, [
-    `${ new Date().getMinutes() } ${ weatherStation }`,
+    new Date().getMinutes(),
+    weatherStation,
   ])
 
   return { ...weather, loading }

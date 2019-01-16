@@ -13,12 +13,7 @@ const sanitizeResponse = (offsetSeconds, plans) => plans
 
 
 
-export default ( props = {} ) => {
-  const {
-    from,
-    to,
-    offsetSeconds,
-  } = props
+export default ({ from, to, offsetSeconds }) => {
   const [ plan, setPlan ] = useState(null)
   const [ loading, setLoading ] = useState(true)
   const [ fetching, setFetching ] = useState(false)
@@ -43,7 +38,10 @@ export default ( props = {} ) => {
   useEffect(() => {
     updateState()
   }, [
-    `${new Date().getSeconds()} ${JSON.stringify(props)}` // remount if props change
+    new Date().getSeconds(),
+    from,
+    to,
+    offsetSeconds,
   ])
 
   return { plan, loading }
