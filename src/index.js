@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import AutoRefresh from 'services/AutoRefresh'
+
 import { Main, Top, Middle, Bottom } from 'components/Layout'
 import Time from 'components/Time'
 import Weather from 'components/Weather'
@@ -8,6 +10,9 @@ import Today from 'components/Today'
 import Message from 'components/Message'
 import Trams from 'components/Trams'
 // import LoadingStatus from 'components/LoadingStatus'
+
+
+AutoRefresh.start()
 
 
 ReactDOM.render((
