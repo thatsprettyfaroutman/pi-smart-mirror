@@ -7,14 +7,14 @@ import Weather from 'components/Weather'
 import Today from 'components/Today'
 import Message from 'components/Message'
 import Trams from 'components/Trams'
-import LoadingStatus from 'components/LoadingStatus'
+// import LoadingStatus from 'components/LoadingStatus'
 
 
 ReactDOM.render((
   <Main>
     <Top>
       {/* Steps go here */}
-      <LoadingStatus />
+      {/* <LoadingStatus /> */}
     </Top>
     <Middle>
       <Message />
