@@ -44,7 +44,7 @@ class AutoRefresh {
       return this.refresh()
     }
 
-    window.location = window.location
+    window.location.reload()
   }
 }
 
