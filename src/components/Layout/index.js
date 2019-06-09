@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-
 export const Main = styled.div`
   display: grid;
   grid-template-columns: 1fr;
@@ -17,17 +16,14 @@ export const Main = styled.div`
   line-height: 1.2;
 `
 
-
 export const Top = styled.section`
   align-self: flex-start;
-  min-height: 200px;
+  ${'' /* min-height: 200px; */}
 `
-
 
 export const Middle = styled.section`
   align-self: center;
 `
-
 
 export const Bottom = styled.section`
   display: grid;

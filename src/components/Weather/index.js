@@ -8,25 +8,15 @@ import Loading from 'components/Loading'
 import RainDrop from './RainDrop'
 import SnowFlake from './SnowFlake'
 
-
-
-
-const Weather = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-
+const Weather = styled.span`
   > svg {
-    display: block;
+    display: inline-block;
     margin: 0;
     margin-right: 20px;
     height: 20px;
     width: auto;
   }
 `
-
-
 
 const WeatherComponent = () => {
   useTick(60000)
@@ -35,21 +25,19 @@ const WeatherComponent = () => {
 
   const { temp, rain, loading } = weather
 
-  if ( loading ) return (
-    <Weather>
-      <Loading />
-    </Weather>
-  )
+  if (loading)
+    return (
+      <Weather>
+        <Loading />
+      </Weather>
+    )
 
   return (
     <Weather>
-      { rain ? temp < 1 ? <SnowFlake /> : <RainDrop /> : null}
-      { isNaN(temp) ? '◇' : temp }°
+      {rain ? temp < 1 ? <SnowFlake /> : <RainDrop /> : null}
+      {isNaN(temp) ? '◇' : temp}°
     </Weather>
   )
 }
-
-
-
 
 export default WeatherComponent
