@@ -15,7 +15,7 @@ import Trams from 'components/Trams'
 AutoRefresh.start()
 
 const GlobalStyle = createGlobalStyle`
-  html {
+  html, body {
     margin: 0;
     padding: 0;
     background-color: #000;
@@ -38,7 +38,7 @@ const GlobalStyle = createGlobalStyle`
 
 const Mini = styled.div`
   display: grid;
-  height: ${window.innerHeight}px;
+  height: 100vh;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr 1fr;
 
