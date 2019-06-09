@@ -55,7 +55,7 @@ ReactDom.render(
     <Mini>
       <MiniRow>
         <Weather />
-        {'\u00A0\u00A0-\u00A0\u00A0'}
+        {'\u00A0'}
         <Today />
       </MiniRow>
       <Trams />
@@ -64,22 +64,3 @@ ReactDom.render(
   </>,
   document.getElementById('root')
 )
-
-/*
-ReactDom.render(
-  <Main>
-    <Top>
-    </Top>
-    <Middle>
-      <Message />
-    </Middle>
-    <Bottom>
-      <Time />
-      <Trams />
-      <Today />
-      <Weather />
-    </Bottom>
-  </Main>,
-  document.getElementById('root')
-)
-*/

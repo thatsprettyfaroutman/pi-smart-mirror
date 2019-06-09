@@ -18,7 +18,7 @@ const epicsToMessages = (epics = []) =>
       const days = differenceInCalendarDays(new Date(date), new Date())
       if (days < 0) return null
       if (days === 0) return [`${name} today!`]
-      return [`${days} days`, `until ${name}`]
+      return [`${days} ${days === 1 ? 'day' : 'days'}`, `until ${name}`]
     })
     .filter(Boolean)
 
@@ -26,7 +26,10 @@ const getPaydayMessage = () => {
   const daysToNextPayday = getDaysToNextPayday(15)
   return daysToNextPayday === 0
     ? ['Payday is today!']
-    : [`${daysToNextPayday} days`, 'until next payday']
+    : [
+        `${daysToNextPayday} ${daysToNextPayday === 1 ? 'day' : 'days'}`,
+        'until next payday'
+      ]
 }
 
 const MessageComponent = () => {
