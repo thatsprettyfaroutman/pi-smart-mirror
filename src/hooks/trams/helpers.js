@@ -1,26 +1,16 @@
 import {
   differenceInMinutes,
   startOfToday,
-  differenceInSeconds,
+  differenceInSeconds
 } from 'date-fns'
-import {
-  last,
-  path,
-} from 'ramda'
+import { last, path } from 'ramda'
 
-
-
-export const HSL_URL = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
-
-
-
+export const HSL_URL =
+  'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
 
 export function getNowInSeconds() {
   return Math.round(Date.now() / 1000)
 }
-
-
-
 
 export async function getHslData(query) {
   const res = await fetch(HSL_URL, {
@@ -28,77 +18,64 @@ export async function getHslData(query) {
     headers: {
       'Content-Type': 'application/graphql'
     },
-    body: query,
+    body: query
   })
   if (res.status === 200) return res.json()
 }
 
-
-
-
 export function getLocation() {
-  return new Promise( resolve=> {
+  return new Promise(resolve => {
     navigator.geolocation.getCurrentPosition(
       pos => {
         resolve(sanitizeLocation(pos.coords))
-      }, () => {
-        resolve(sanitizeLocation({
-          // latitude: 60.170852800000006,
-          // longitude: 24.945129599999998,
-          latitude: 60.159158000000005,
-          longitude: 24.919978,
-        }))
+      },
+      () => {
+        resolve(
+          sanitizeLocation({
+            latitude: 60.186224,
+            longitude: 24.9547946
+          })
+        )
       }
     )
   })
 }
 
-
-
-
-export function sanitizeLocation( location ) {
+export function sanitizeLocation(location) {
   return {
     lat: location.lat || location.latitude,
     latitude: location.lat || location.latitude,
     lon: location.lon || location.longitude,
-    longitude: location.lon || location.longitude,
+    longitude: location.lon || location.longitude
   }
 }
-
-
-
-
 
 export async function solveNearestStop() {
   let location = await getLocation()
 
   const nearest = await getHslData(`{
-    nearest(lat: ${ location.latitude }, lon: ${ location.longitude }) {
+    nearest(lat: ${location.latitude}, lon: ${location.longitude}) {
       edges { node { id }}
     }
   }`)
 
-
   const edges = path(['data', 'nearest', 'edges'], nearest) || []
   const stopIds = edges
     .map(({ node }) => atob(last(atob(node.id).split(';'))))
-    .filter( x => x.indexOf('Stop:') === 0 )
-    .map( x => x.slice(5) )
+    .filter(x => x.indexOf('Stop:') === 0)
+    .map(x => x.slice(5))
 
   return stopIds
 }
 
-
-
-
-export async function getTrams( stopId, startTime = getNowInSeconds() ) {
+export async function getTrams(stopId, startTime = getNowInSeconds()) {
   const res = await getHslData(`
     {
-      stop(id:"${ stopId }"){
+      stop(id:"${stopId}"){
         name
         gtfsId
         stoptimesWithoutPatterns(
-          startTime:"${ startTime }",
+          startTime:"${startTime}",
           timeRange: 18000,
           numberOfDepartures:4
         ) {
@@ -116,39 +93,34 @@ export async function getTrams( stopId, startTime = getNowInSeconds() ) {
           }
         }
       }
-    }`
-  )
+    }`)
 
-  if ( !res ) throw new Error('No route data')
+  if (!res) throw new Error('No route data')
 
   const stopTimes =
-    res.data &&
-    res.data.stop &&
-    res.data.stop.stoptimesWithoutPatterns
+    res.data && res.data.stop && res.data.stop.stoptimesWithoutPatterns
 
-  if ( !stopTimes ) throw new Error('Faulty route data')
+  if (!stopTimes) throw new Error('Faulty route data')
 
   const now = Date.now()
 
   return stopTimes
     .map(stopTime => {
-      const arrivalDate =
-        new Date((stopTime.serviceDay + stopTime.realtimeArrival) * 1000)
+      const arrivalDate = new Date(
+        (stopTime.serviceDay + stopTime.realtimeArrival) * 1000
+      )
       const arrivalInMinutes = differenceInMinutes(arrivalDate, now)
-      const arrival = arrivalInMinutes// - WALK_MINUTES
-      return ({
+      const arrival = arrivalInMinutes // - WALK_MINUTES
+      return {
         arrival,
-        lineName: stopTime.trip.route.shortName,
-      })
+        lineName: stopTime.trip.route.shortName
+      }
     })
-    .filter( stopTime => stopTime.arrival >= 0 )
+    .filter(stopTime => stopTime.arrival >= 0)
 }
 
-
-
-
 export async function getPlans(from, to, when = new Date()) {
-  if ( !from || !to ) {
+  if (!from || !to) {
     throw new Error('`from` or `to` is missing')
   }
 
@@ -202,17 +174,18 @@ export async function getPlans(from, to, when = new Date()) {
 
   const steps = path(['data', 'plan', 'itineraries'], res) || []
   const stepStrings = steps
-    .map(step => step.legs
-      .map((leg, i) => {
-        let seconds = differenceInSeconds(new Date(leg.startTime), now)
-        return [
-          leg.trip ? leg.trip.route.shortName : undefined,
-          i === 0 ? Number(seconds) : undefined,
-        ]
-          .filter(x => x !== undefined)
-          .join(' ')
-      })
-      .filter(Boolean)
+    .map(step =>
+      step.legs
+        .map((leg, i) => {
+          let seconds = differenceInSeconds(new Date(leg.startTime), now)
+          return [
+            leg.trip ? leg.trip.route.shortName : undefined,
+            i === 0 ? Number(seconds) : undefined
+          ]
+            .filter(x => x !== undefined)
+            .join(' ')
+        })
+        .filter(Boolean)
     )
     .sort((a, b) => Number(a[0]) - Number(b[0]))
     .filter(x => Boolean(x[1]))
